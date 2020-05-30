@@ -1,0 +1,5 @@
+/integration
+/src
+/.idea
+/.circleci
+/jest.config.js

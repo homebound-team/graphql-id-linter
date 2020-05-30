@@ -1,0 +1,25 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  authors(id: ID): [Author!]!
+}
+
+type Mutation {
+  saveAuthor(input: AuthorInput!): SaveAuthorResult!
+}
+
+type Author {
+  id: ID!
+  name: String!
+}
+
+type SaveAuthorResult {
+  author: Author!
+}
+
+input AuthorInput {
+  name: String
+}

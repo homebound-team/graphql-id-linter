@@ -1,0 +1,2 @@
+# graphq-id-linter
+

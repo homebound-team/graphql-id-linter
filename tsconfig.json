@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["esnext"],
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "types": ["jest"],
+    "outDir": "build"
+  },
+  "include": ["src"],
+  "exclude": ["integration"]
+}
