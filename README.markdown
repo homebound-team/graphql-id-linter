@@ -9,7 +9,7 @@ Credits, this is a ~80% copy/paste of [Cecchi](https://github.com/cecchi)'s solu
 ## Install
 
 ```bash
-npm install --save-dev @homebound-team/graphql-id-linter
+npm install --save-dev @homebound/graphql-id-linter
 ```
 
 Include it in your `graphql-codegen.yml`:
