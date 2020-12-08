@@ -1,5 +1,8 @@
 query LoadAuthors {
   authors {
     name
+    status {
+      name
+    }
   }
 }
