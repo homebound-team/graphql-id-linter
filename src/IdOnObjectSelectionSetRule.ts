@@ -70,7 +70,7 @@ export function IdOnObjectSelectionSetRule(location: string | undefined) {
 
 /** Given a set of SelectionNodes from a SelectionSet, ensure "id" is included. */
 function selectionSetIncludes(selectionNodes: readonly SelectionNode[], fieldName: string) {
-  return selectionNodes.some(selectionNode => {
+  return selectionNodes.some((selectionNode) => {
     switch (selectionNode.kind) {
       case "Field":
         return selectionNode.name.value === fieldName;
