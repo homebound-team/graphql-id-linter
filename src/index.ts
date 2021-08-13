@@ -5,7 +5,7 @@ import PluginOutput = Types.PluginOutput;
 
 export const plugin: PluginFunction = async (schema, documents) => {
   const errors: GraphQLError[] = [];
-  documents.forEach(d => {
+  documents.forEach((d) => {
     const { document } = d;
     if (document) {
       errors.push(...validate(schema, document, [IdOnObjectSelectionSetRule(d.location)]));
