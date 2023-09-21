@@ -3,3 +3,11 @@
 /.idea
 /.circleci
 /jest.config.js
+/.yarn
+/.nvmrc
+/.prettierrc.js
+/.yarnrc.yml
+/bump.sh
+/jest.config.js
+/yarn.lock
+/tsconfig.json
