@@ -23,6 +23,15 @@ workflows:
             branches:
               only:
                 - main
+  # TEMPORARY (ON-405): inspect why npm rejects this repo's OIDC token. Delete with the branch.
+  oidc-debug:
+    jobs:
+      - oidc-debug:
+          context: npm-trusted-publish
+          filters:
+            branches:
+              only:
+                - on-405-oidc-debug
 
 commands:
   bootstrap:
@@ -54,3 +63,26 @@ jobs:
       - run: |
           export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud":"npm:registry.npmjs.org"}')
           yarn npm publish
+
+  # TEMPORARY (ON-405): prints the OIDC token's header and claims (never the token itself)
+  # and npm's response to the token exchange (with any returned token removed).
+  oidc-debug:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - run:
+          name: Inspect OIDC token claims and npm token exchange
+          command: |
+            set -uo pipefail
+            echo "== circleci run oidc get --help"
+            circleci run oidc get --help 2>&1 | head -40 || true
+            TOKEN=$(circleci run oidc get --claims '{"aud":"npm:registry.npmjs.org"}')
+            decode() { local p; p=$(cut -d. -f"$2" \<<<"$1" | tr '_-' '/+'); while [ $(( ${#p} % 4 )) -ne 0 ]; do p="$p="; done; base64 -d \<<<"$p"; }
+            echo "== token header"; decode "$TOKEN" 1 | jq .
+            echo "== token claims"; decode "$TOKEN" 2 | jq 'del(.jti)'
+            echo "== npm token exchange for @homebound/graphql-id-linter"
+            code=$(curl -sS -o /tmp/exchange.json -w '%{http_code}' -X POST -H "Authorization: Bearer $TOKEN" \
+              "https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/%40homebound%2Fgraphql-id-linter")
+            echo "HTTP $code"
+            jq 'del(.token)' /tmp/exchange.json 2>/dev/null || head -c 500 /tmp/exchange.json
+            rm -f /tmp/exchange.json
